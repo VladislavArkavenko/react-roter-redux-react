@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+import { fetchPopularRepos } from './api'
 
-class Grid extends Component {
+class RepoGrid extends Component {
     constructor(props){
         super(props)
 
@@ -38,7 +39,7 @@ class Grid extends Component {
             loading: true
         }) )
 
-        this.props.fetchInitialData(lang)
+        fetchPopularRepos(lang)
             .then( repos => this.setState( () => ({
                 repos,
                 loading: false,
@@ -68,4 +69,4 @@ class Grid extends Component {
     }
 }
 
-export default Grid
+export default RepoGrid

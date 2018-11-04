@@ -18,9 +18,11 @@ app.use(express.static('public'))
 app.get( '*' , (req, res, next) => {
     const activeRoute = routes.find((route) => matchPath(req.url, route)) || {}
 
-    const promise = activeRoute.fetchInitialData
-        ? activeRoute.fetchInitialData(req.path)
+
+    const promise = activeRoute.loadData
+        ? activeRoute.loadData(req.path)
         : Promise.resolve()
+
 
     promise
         .then(data => {

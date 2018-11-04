@@ -1,8 +1,9 @@
 import Home from './Home'
 import Languages from './Languages'
 import Users from './Users'
-import Grid from './Grid'
-import { fetchPopularRepos } from './api'
+import RepoGrid from './repoGrid'
+import UserGrid from './userGrid'
+import { fetchPopularRepos, fetchUser } from './api'
 
 const routes =  [
     {
@@ -17,10 +18,10 @@ const routes =  [
     },
     {
         path: '/languages/:id',
-        component: Grid,
-        fetchInitialData: (path = '') => fetchPopularRepos(
-            path.split('/').pop()
-        )
+        component: RepoGrid,
+        loadData: (path = '') => fetchPopularRepos(
+                path.split('/').pop()
+            )
     },
     {
         path: '/users',
@@ -29,10 +30,10 @@ const routes =  [
     },
     {
         path: '/users/:id',
-        component: Grid,
-        fetchInitialData: (path = '') => fetchPopularRepos(
-            path.split('/').pop()
-        )
+        component: UserGrid,
+        loadData: (path = '') => fetchUser(
+                path.split('/').pop()
+            )
     }
 ]
 
