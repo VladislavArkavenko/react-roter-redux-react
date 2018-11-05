@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { fetchUser } from './api'
+import { fetchUser } from '../api'
+import Counter from './counter'
 
-class UserGrid extends Component {
+
+export default class UserGrid extends Component {
     constructor(props){
         super(props)
 
         let user
 
-        if (__isBrowser__) {
+        if ( __isBrowser__ ) {
             user = window.__INITIAL_DATA__
             delete window.__INITIAL_DATA__
         } else {
@@ -61,9 +63,8 @@ class UserGrid extends Component {
                 </a>
                 <p>Followers: {user.followers}</p>
                 <p>Following: {user.following}</p>
+                < Counter user={user.login} />
             </div>
         )
     }
 }
-
-export default UserGrid

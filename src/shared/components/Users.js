@@ -1,8 +1,8 @@
-import React from 'react';
-import {NavLink} from "react-router-dom";
-
+import {NavLink} from 'react-router-dom'
+import React from 'react'
 
 export default function Users() {
+
     const users = [
             {
                 name: 'Me',
@@ -20,15 +20,15 @@ export default function Users() {
 
     return (
         <div>
-            <h2>This is Users page.</h2>
+            <h2> This is Users page. </h2>
             <ul>
-                {users.map(({ name, param }) => (
+                { users.map( ({name, param}) => (
                     <li key={param}>
                         <NavLink activeStyle={{fontWeight: 'bold'}} to={`/users/${param}`}>
                             {name}
                         </NavLink>
                     </li>
-                ))}
+                ) ) }
             </ul>
         </div>
     )

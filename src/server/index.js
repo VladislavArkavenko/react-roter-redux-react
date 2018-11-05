@@ -1,12 +1,15 @@
+import { StaticRouter, matchPath } from "react-router-dom"
+import { renderToString } from 'react-dom/server'
+import serialize from "serialize-javascript"
+import reducers from '../shared/reducers'
+import { Provider } from 'react-redux'
+import routes from '../shared/routes'
+import Loadable from 'react-loadable'
+import { createStore } from 'redux'
+import App from '../shared/App'
 import express from 'express'
 import React from 'react'
-import routes from '../shared/routes'
 import cors from 'cors'
-import { renderToString } from 'react-dom/server'
-import App from '../shared/App'
-import serialize from "serialize-javascript"
-import { StaticRouter, matchPath } from "react-router-dom"
-
 
 const app = express()
 const port = 3000;
@@ -18,7 +21,6 @@ app.use(express.static('public'))
 app.get( '*' , (req, res, next) => {
     const activeRoute = routes.find((route) => matchPath(req.url, route)) || {}
 
-
     const promise = activeRoute.loadData
         ? activeRoute.loadData(req.path)
         : Promise.resolve()
@@ -26,12 +28,16 @@ app.get( '*' , (req, res, next) => {
 
     promise
         .then(data => {
+            const store = createStore(reducers)
+            const preloadedState = store.getState()
             const context = { data }
 
             const markup = renderToString(
-                <StaticRouter location={req.url}  context={context}>
-                    <App data={data}/>
-                </StaticRouter>
+                <Provider store={store}>
+                    <StaticRouter location={req.url}  context={context}>
+                        <App data={data}/>
+                    </StaticRouter>
+                </Provider>
             )
 
             res.send(`
@@ -39,9 +45,10 @@ app.get( '*' , (req, res, next) => {
                 <html>
                 
                   <head>
-                    <title>SSR with RR</title>
+                    <title>My app</title>
                     <script src="/bundle.js" defer></script>
                     <script> window.__INITIAL_DATA__ = ${serialize(data)} </script>
+                    <script> window.__PRELOADED_STATE__ = ${serialize(preloadedState)} </script> 
                   </head>
                 
                   <body>
@@ -54,7 +61,8 @@ app.get( '*' , (req, res, next) => {
         .catch(next)
 })
 
-
-app.listen( port, () => {
-    console.log(`Server is listening on port: ${port}`)
+Loadable.preloadAll().then(() => {
+    app.listen( port, () => {
+        console.log(`Server is listening on port: ${port}`)
+    })
 })

@@ -1,13 +1,12 @@
+import { fetchPopularRepos } from '../api'
 import React, { Component } from 'react'
-import { fetchPopularRepos } from './api'
 
-class RepoGrid extends Component {
+export default class RepoGrid extends Component {
     constructor(props){
         super(props)
-
         let repos
 
-        if (__isBrowser__) {
+        if ( __isBrowser__ ) {
             repos = window.__INITIAL_DATA__
             delete window.__INITIAL_DATA__
         } else {
@@ -16,7 +15,7 @@ class RepoGrid extends Component {
 
         this.state = {
             repos,
-            loading: repos ? false : true,
+            loading: repos ? false : true
         }
 
         this.fetchRepos = this.fetchRepos.bind(this)
@@ -55,18 +54,16 @@ class RepoGrid extends Component {
 
         return (
             <ul style={{display: 'flex', flexWrap: 'wrap'}}>
-                {repos.map(({ name, owner, stargazers_count, html_url }) => (
-                    <li key={name} style={{margin: 30}}>
+                { repos.map( ({ name, owner, stargazers_count, html_url }) => (
+                    <li key={name} style={ {margin: 30} }>
                         <ul>
-                            <li><a href={html_url}>{name}</a></li>
-                            <li>@{owner.login}</li>
-                            <li>{stargazers_count} stars</li>
+                            <li> <a href={html_url}> {name} </a> </li>
+                            <li> @{owner.login} </li>
+                            <li> {stargazers_count} stars </li>
                         </ul>
                     </li>
-                ))}
+                ) ) }
             </ul>
         )
     }
 }
-
-export default RepoGrid

@@ -1,24 +1,30 @@
-import Home from './Home'
-import Languages from './Languages'
-import Users from './Users'
-import RepoGrid from './repoGrid'
-import UserGrid from './userGrid'
 import { fetchPopularRepos, fetchUser } from './api'
+import Loadable from "react-loadable"
+import Loading from './components/Loading'
 
 const routes =  [
     {
         path: '/',
         exact: true,
-        component: Home
+        component: Loadable({
+            loader: () => import('./components/Home'),
+            loading: Loading
+        })
     },
     {
         path: '/languages',
         exact: true,
-        component: Languages
+        component: Loadable({
+            loader: () => import('./components/Languages'),
+            loading: Loading
+        })
     },
     {
         path: '/languages/:id',
-        component: RepoGrid,
+        component: Loadable({
+            loader: () => import('./components/repoGrid'),
+            loading: Loading
+        }),
         loadData: (path = '') => fetchPopularRepos(
                 path.split('/').pop()
             )
@@ -26,11 +32,17 @@ const routes =  [
     {
         path: '/users',
         exact: true,
-        component: Users
+        component: Loadable({
+            loader: () => import('./components/Users'),
+            loading: Loading
+        })
     },
     {
         path: '/users/:id',
-        component: UserGrid,
+        component: Loadable({
+            loader: () => import('./components/userGrid'),
+            loading: Loading
+        }),
         loadData: (path = '') => fetchUser(
                 path.split('/').pop()
             )

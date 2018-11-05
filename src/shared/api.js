@@ -9,10 +9,10 @@ export function fetchPopularRepos (language = 'all') {
         .catch(err => {
             console.warn(err)
             return null
-        });
+        })
 }
 
-export function fetchUser(user = 'someone') {
+export function fetchUser(user = ' ') {
     const encodedURI = encodeURI(`https://api.github.com/users/${user}`)
 
     return fetch(encodedURI)
@@ -20,5 +20,5 @@ export function fetchUser(user = 'someone') {
         .catch(err => {
             console.warn(err)
             return null
-        });
+        })
 }
