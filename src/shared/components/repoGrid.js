@@ -49,21 +49,21 @@ export default class RepoGrid extends Component {
         const { repos, loading } = this.state
 
         if (loading) {
-            return <p>Loading...</p>
+            return <p> Loading... </p>
+        } else {
+            return (
+                <ul style={{display: 'flex', flexWrap: 'wrap'}}>
+                    { repos.map( ({ name, owner, stargazers_count, html_url }) => (
+                        <li key={name} style={ {margin: 30} }>
+                            <ul>
+                                <li> <a href={html_url}> {name} </a> </li>
+                                <li> @{owner.login} </li>
+                                <li> {stargazers_count} stars </li>
+                            </ul>
+                        </li>
+                    ) ) }
+                </ul>
+            )
         }
-
-        return (
-            <ul style={{display: 'flex', flexWrap: 'wrap'}}>
-                { repos.map( ({ name, owner, stargazers_count, html_url }) => (
-                    <li key={name} style={ {margin: 30} }>
-                        <ul>
-                            <li> <a href={html_url}> {name} </a> </li>
-                            <li> @{owner.login} </li>
-                            <li> {stargazers_count} stars </li>
-                        </ul>
-                    </li>
-                ) ) }
-            </ul>
-        )
     }
 }

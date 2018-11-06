@@ -55,16 +55,24 @@ export default class UserGrid extends Component {
             return <p>Loading...</p>
         }
 
-        return (
-            <div>
-                <img src={user.avatar_url} alt="Avatar"/>
-                <a href={user.url}>
-                    <h5>{user.login}</h5>
-                </a>
-                <p>Followers: {user.followers}</p>
-                <p>Following: {user.following}</p>
-                < Counter user={user.login} />
-            </div>
-        )
+        if(user.message === "Not Found"){
+            return (
+                <div>
+                   <h1> Sorry, we didn`t found anyone with this name. </h1>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <img src={user.avatar_url} alt="Avatar"/>
+                    <a href={user.url}>
+                        <h5>{user.login}</h5>
+                    </a>
+                    <p>Followers: {user.followers}</p>
+                    <p>Following: {user.following}</p>
+                    < Counter user={user.login} />
+                </div>
+            )
+        }
     }
 }

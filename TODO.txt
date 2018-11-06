@@ -1,0 +1,4 @@
+TODO: Redux modules.
+TODO: Server code splitting.
+TODO: Find out how to integrate webpack ^4.0 or later
+TODO: Make pages change only after next page is loaded.

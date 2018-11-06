@@ -1,6 +1,7 @@
 import { fetchPopularRepos, fetchUser } from './api'
 import Loadable from "react-loadable"
 import Loading from './components/Loading'
+import NoMatch from "./components/NoMatch";
 
 const routes =  [
     {
@@ -46,6 +47,10 @@ const routes =  [
         loadData: (path = '') => fetchUser(
                 path.split('/').pop()
             )
+    },
+    {
+        path: '*',
+        component:  NoMatch
     }
 ]
 

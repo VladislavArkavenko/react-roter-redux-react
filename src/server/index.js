@@ -27,7 +27,7 @@ app.get( '*' , (req, res, next) => {
 
 
     promise
-        .then(data => {
+        .then( data => {
             const store = createStore(reducers)
             const preloadedState = store.getState()
             const context = { data }
