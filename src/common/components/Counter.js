@@ -1,6 +1,5 @@
-import  { increment, decrement, addUser }  from '../actions'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import connect  from '../redux-moduls/counterConnect'
 
 class Counter extends Component {
     componentWillMount() {
@@ -20,27 +19,4 @@ class Counter extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        increment: user => {
-            dispatch( increment(user) )
-        },
-        decrement: user => {
-            dispatch( decrement(user) )
-        },
-        addUser: user => {
-            dispatch( addUser(user) )
-        }
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        counter: state.counter
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Counter)
+export default connect(Counter)

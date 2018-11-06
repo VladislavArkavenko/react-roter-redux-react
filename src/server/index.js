@@ -1,12 +1,12 @@
 import { StaticRouter, matchPath } from "react-router-dom"
 import { renderToString } from 'react-dom/server'
 import serialize from "serialize-javascript"
-import reducers from '../shared/reducers'
 import { Provider } from 'react-redux'
-import routes from '../shared/routes'
+import reducers from './reduxReducers'
+import routes from '../common/routes'
 import Loadable from 'react-loadable'
 import { createStore } from 'redux'
-import App from '../shared/App'
+import App from '../common/App'
 import express from 'express'
 import React from 'react'
 import cors from 'cors'

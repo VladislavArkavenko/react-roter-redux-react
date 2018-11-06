@@ -3,7 +3,7 @@ let webpack = require('webpack')
 let nodeExternals = require('webpack-node-externals')
 
 let browserConfig = {
-    entry: './src/browser/index.js',
+    entry: './src/client/index.js',
     output: {
         path: path.resolve(__dirname, 'public'),
         filename: 'bundle.js',

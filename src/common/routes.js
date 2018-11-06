@@ -23,7 +23,7 @@ const routes =  [
     {
         path: '/languages/:id',
         component: Loadable({
-            loader: () => import('./components/repoGrid'),
+            loader: () => import('./components/RepoGrid'),
             loading: Loading
         }),
         loadData: (path = '') => fetchPopularRepos(
@@ -41,7 +41,7 @@ const routes =  [
     {
         path: '/users/:id',
         component: Loadable({
-            loader: () => import('./components/userGrid'),
+            loader: () => import('./components/UserGrid'),
             loading: Loading
         }),
         loadData: (path = '') => fetchUser(

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { fetchUser } from '../api'
-import Counter from './counter'
+import Counter from './Counter'
 
 
 export default class UserGrid extends Component {
