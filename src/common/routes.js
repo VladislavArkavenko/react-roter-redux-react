@@ -1,7 +1,6 @@
 import { fetchPopularRepos, fetchUser } from './api'
-import Loadable from "react-loadable"
 import Loading from './components/Loading'
-import NoMatch from "./components/NoMatch";
+import Loadable from 'react-loadable'
 
 const routes =  [
     {
@@ -50,7 +49,10 @@ const routes =  [
     },
     {
         path: '*',
-        component:  NoMatch
+        component: Loadable({
+            loader: () => import('./components/NoMatch'),
+            loading: Loading
+        })
     }
 ]
 

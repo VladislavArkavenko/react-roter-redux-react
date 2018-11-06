@@ -1,13 +1,15 @@
-let path = require('path')
-let webpack = require('webpack')
-let nodeExternals = require('webpack-node-externals')
+const { ReactLoadablePlugin } = require('react-loadable/webpack')
+const nodeExternals = require('webpack-node-externals')
+const webpack = require('webpack')
+const path = require('path')
 
-let browserConfig = {
-    entry: './src/client/index.js',
+let clientConfig = {
+    entry: './src/client',
     output: {
-        path: path.resolve(__dirname, 'public'),
-        filename: 'bundle.js',
-        publicPath: '/'
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist'),
+        chunkFilename: '[name].js',
+        publicPath: '/dist/'
     },
     module: {
         rules: [
@@ -21,18 +23,24 @@ let browserConfig = {
     plugins: [
         new webpack.DefinePlugin({
             __isBrowser__: "true"
+        }),
+        new ReactLoadablePlugin({
+            filename:  path.resolve(__dirname, 'dist', 'react-loadable.json'),
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'manifest',
+            minChunks: Infinity
         })
     ]
 }
 
 let serverConfig = {
-    entry: './src/server/index.js',
+    entry: './src/server',
     target: 'node',
     externals: [nodeExternals()],
     output: {
-        path: __dirname,
-        filename: 'server.js',
-        publicPath: '/'
+        path: path.resolve(__dirname, 'build'),
+        filename: 'bundle.js'
     },
     module: {
         rules: [
@@ -50,4 +58,4 @@ let serverConfig = {
     ]
 }
 
-module.exports = [browserConfig, serverConfig]
+module.exports = [clientConfig, serverConfig]

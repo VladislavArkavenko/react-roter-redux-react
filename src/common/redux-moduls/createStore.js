@@ -7,7 +7,7 @@ delete window.__PRELOADED_STATE__
 const combine = (reducers) => {
     const reducerNames = Object.keys(reducers)
 
-    Object.keys(preloadedState).forEach(item => {
+    Object.keys(preloadedState).forEach( item => {
         if (reducerNames.indexOf(item) === -1) {
             reducers[item] = (state = null) => state
         }
@@ -25,7 +25,7 @@ const store = createStore(
 
 // Replace the store's reducer whenever a new reducer is registered.
 reducerRegistry.setChangeListener( reducers => {
-    store.replaceReducer( combine(reducers) )
+    store.replaceReducer( combine( reducers ) )
 })
 
 export default store

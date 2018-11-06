@@ -1,6 +1,9 @@
 node_modules/
 .idea/
-public/*bundle.js
-*server.js
-react-loadable.json
-vim.exe.stackdump
+build/
+dist/
+
+
+
+
+

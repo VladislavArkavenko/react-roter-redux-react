@@ -1,5 +1,6 @@
+import connect from '../redux-moduls/counterConnect'
 import React, { Component } from 'react'
-import connect  from '../redux-moduls/counterConnect'
+
 
 class Counter extends Component {
     componentWillMount() {

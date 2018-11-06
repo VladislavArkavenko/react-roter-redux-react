@@ -1,3 +1,3 @@
-TODO: Server code splitting.
-TODO: Find out how to integrate webpack ^4.0 or later
-TODO: Make pages change only after next page is loaded.
+TODO: Find out why Redux doesn`t launch.
+TODO: Find out how to get rid of  "Trace: The node type SpreadProperty has been renamed to SpreadElement".
+TODO: Separate webpack server and client config files.
