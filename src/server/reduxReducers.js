@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux'
 
-import reducer  from '../common/redux-moduls/counterModule'
+import counter from '../common/redux-modules/counterModule'
+import repos from '../common/redux-modules/reposModule'
 
 export default combineReducers({
-    counter: reducer
+    counter,
+    repos
 });

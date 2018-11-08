@@ -5,7 +5,7 @@ import fetch from 'isomorphic-fetch'
 const initialState = {
     loading: false,
     error: null,
-    data: []
+    data: {}
 }
 
 // Constants
@@ -21,13 +21,16 @@ export const requestRepos = lang => dispatch => {
     fetch(getURI(lang))
         .then( res => res.json() )
         .then( repos => repos.items)
-        .then( repos => dispatch(successRepos(repos)) )
+        .then( repos => dispatch(successRepos(repos, lang)) )
         .catch( err => dispatch(failureRepos(err)) )
 }
 
-export const successRepos = repos => ({
+export const successRepos = (repos, language) => ({
     type: REPOS_SUCCESS,
-    payload: repos
+    payload: {
+        repos,
+        language
+    }
 })
 
 export const failureRepos =  err => ({
@@ -39,14 +42,17 @@ export const failureRepos =  err => ({
 const reducerName = 'repos';
 
 // Reducer
-export default function reducer  (state = initialState, action) {
+export default function reducer (state = initialState, action) {
     switch(action.type){
         case REPOS_REQUEST:
-            return Object.assign( {}, state, { loading: true })
+            return Object.assign( {}, state, {
+                loading: true,
+                error: null
+            })
         case REPOS_SUCCESS:
             return Object.assign( {}, state, {
-                isFetching: false,
-                data : [action.payload, ...state.data]
+                loading: false,
+                data : Object.assign( {}, state.data, { [action.payload.language]: action.payload.repos })
             })
         case REPOS_FAILURE:
             return Object.assign( {}, state, {

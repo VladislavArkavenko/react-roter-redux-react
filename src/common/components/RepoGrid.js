@@ -1,69 +1,83 @@
-import { fetchPopularRepos } from '../api'
-import React, { Component } from 'react'
+import { requestRepos } from '../redux-modules/reposModule'
+import React, { Component , Fragment } from 'react'
+import { connect } from 'react-redux'
 
-export default class RepoGrid extends Component {
-    constructor(props){
+class RepoGrid extends Component {
+    constructor(props) {
         super(props)
-        let repos
 
-        if ( __isBrowser__ ) {
-            repos = window.__INITIAL_DATA__
-            delete window.__INITIAL_DATA__
-        } else {
-            repos = props.staticContext.data
-        }
-
-        this.state = {
-            repos,
-            loading: repos ? false : true
-        }
-
-        this.fetchRepos = this.fetchRepos.bind(this)
     }
 
     componentDidMount () {
-        if (!this.state.repos) {
-            this.fetchRepos(this.props.match.params.id)
+        const isNewLang = !this.props.data[this.props.match.params.language]
+
+        if (isNewLang) {
+            this.fetchRepos(this.props.repos, this.props.match)
         }
     }
 
-    componentDidUpdate (prevProps) {
-        if (prevProps.match.params.id !== this.props.match.params.id) {
-            this.fetchRepos(this.props.match.params.id)
+    componentWillReceiveProps(nextProps) {
+        const isNewLang = !this.props.data[nextProps.match.params.language]
+
+        if (isNewLang) {
+            this.fetchRepos(nextProps.repos, nextProps.match)
         }
     }
 
-    fetchRepos (lang) {
-        this.setState( () => ({
-            loading: true
-        }) )
-
-        fetchPopularRepos(lang)
-            .then( repos => this.setState( () => ({
-                repos,
-                loading: false,
-            }) ) )
+    fetchRepos ( repos, match ) {
+        if(!repos) {
+            this.props.requestRepos( match.params.language )
+        }
     }
 
     render() {
-        const { repos, loading } = this.state
+        const {error, repos}  = this.props;
 
-        if (loading) {
-            return <p> Loading... </p>
+        if (this.props.error) {
+            return (
+                <Fragment>
+                    <h6> Ops! There is { error.status } error. </h6>
+                    <p> { error.message } </p>
+                </Fragment>
+            )
+        } else if (!repos) {
+            return(
+                <Fragment>
+                    <h2> Loading... </h2>
+                    <p>  Please wait a few seconds </p>
+                </Fragment>
+                )
         } else {
             return (
                 <ul style={{display: 'flex', flexWrap: 'wrap'}}>
-                    { repos.map( ({ name, owner, stargazers_count, html_url }) => (
-                        <li key={name} style={ {margin: 30} }>
-                            <ul>
-                                <li> <a href={html_url}> {name} </a> </li>
-                                <li> @{owner.login} </li>
-                                <li> {stargazers_count} stars </li>
-                            </ul>
-                        </li>
-                    ) ) }
+                    {
+                        repos.map( ({ name, owner, stargazers_count, html_url }) => (
+                            <li key={name} style={{margin: 30}}>
+                                <ul>
+                                    <li><a href={html_url}> {name} </a></li>
+                                    <li> @{owner.login} </li>
+                                    <li> {stargazers_count} stars </li>
+                                </ul>
+                            </li>
+                        ) )
+                    }
                 </ul>
             )
         }
     }
+
 }
+
+const mapStateToProps = (state, ownProps) => {
+
+
+    return {
+        error: state.repos.error,
+        repos:  state.repos.data[ownProps.match.params.language],
+        data: state.repos.data
+    }
+}
+
+const mapDispatchToProps = {requestRepos}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RepoGrid)

@@ -1,4 +1,4 @@
-import store from '../common/redux-moduls/createStore'
+import store from './configureStore'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import Loadable from 'react-loadable'
@@ -7,10 +7,11 @@ import App from '../common/App'
 import React from 'react'
 
 Loadable.preloadReady().then( () => {
+
     hydrate(
         <Provider store={store}>
             <BrowserRouter>
-                <App data={ window.__INITIAL_DATA__ } />
+                <App/>
             </BrowserRouter>
         </Provider>,
         document.getElementById('app')

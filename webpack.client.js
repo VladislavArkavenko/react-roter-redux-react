@@ -1,5 +1,4 @@
 const { ReactLoadablePlugin } = require('react-loadable/webpack')
-const nodeExternals = require('webpack-node-externals')
 const webpack = require('webpack')
 const path = require('path')
 
@@ -10,18 +9,7 @@ let config = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         chunkFilename: '[name].js',
-        publicPath: '/dist/'
-    },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendor',
-                    chunks: 'all'
-                }
-            }
-        }
+        publicPath: '/'
     },
     module: {
         rules: [

@@ -1,3 +1,9 @@
+import { applyMiddleware, combineReducers, createStore } from 'redux'
+import thunk from 'redux-thunk'
+import logger from 'redux-logger'
+import reducerRegistry from '../common/redux-modules/reducerRegistry'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
 const preloadedState = window.__PRELOADED_STATE__
 delete window.__PRELOADED_STATE__
 
@@ -7,6 +13,23 @@ const combine = (reducers) => {
         if (reducerNames.indexOf(item) === -1) {
             reducers[item] = (state = null) => state
         }
-    });
+    })
     return combineReducers(reducers)
-};
+}
+
+const enhancer = composeWithDevTools( applyMiddleware(thunk, logger) )
+const reducer = combine( reducerRegistry.getReducers() )
+
+const store = createStore(
+    reducer,
+    preloadedState,
+    enhancer
+)
+
+
+// To replace the store's reducer whenever a new reducer is registered.
+reducerRegistry.setChangeListener( reducers => {
+    store.replaceReducer( combine(reducers) );
+})
+
+export default store

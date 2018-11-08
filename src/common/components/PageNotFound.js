@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function NoMatch () {
+export default function PageNotFound () {
     return (
         <div>
-            <h1> Error: Four Oh Four </h1>
-            <p> Invalid rout. </p>
+            <h1> Error: 404 </h1>
+            <p> Page not found </p>
         </div>
     )
 }
