@@ -1,2 +1,0 @@
-TODO: Find out how to get rid of  "Trace: The node type SpreadProperty has been renamed to SpreadElement".
-TODO: Make "npm start" work correctly.

@@ -43,7 +43,7 @@ const routes =  [
             loader: () => import('./components/UserGrid')
         }),
         loadData: (store, match) => {
-            import('./redux-modules/userModule')
+            import('./redux-modules/usersModule')
                 .then( module => {
                     return store.dispatch( module.default( match.params.language ) )
                 })

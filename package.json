@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon --watch build --exec \"node  build/bundle.js\"",
-    "build-server": "webpack --config webpack.server.js --watch",
-    "build-client": "webpack --config webpack.client.js --watch"
+    "start": "npm-run-all --parallel dev:*",
+    "dev:server": "nodemon --watch build --exec \"node  build/bundle.js\"",
+    "dev:build-server": "webpack --config webpack.server.js --watch",
+    "dev:build-client": "webpack --config webpack.client.js --watch"
   },
-  "author": "",
+  "author": "V.Arkavnko",
   "license": "MIT",
-  "description": "",
+  "description": "Good client architecture",
   "babel": {
     "presets": [
       "@babel/env",
@@ -22,29 +23,29 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "babel-loader": "^8.0.4",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "nodemon": "^1.18.6",
     "redux-logger": "^3.0.6",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "cors": "^2.8.4",
-    "express": "^4.16.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
     "react-loadable": "^5.5.0",
     "react-redux": "^5.1.0",
     "react-router-config": "^4.4.0-beta.6",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
     "redux-thunk": "^2.3.0",
