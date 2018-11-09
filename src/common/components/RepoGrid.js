@@ -1,11 +1,10 @@
 import { requestRepos } from '../redux-modules/reposModule'
-import React, { Component , Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
 class RepoGrid extends Component {
     constructor(props) {
         super(props)
-
     }
 
     componentDidMount () {
@@ -69,8 +68,6 @@ class RepoGrid extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
-
     return {
         error: state.repos.error,
         repos:  state.repos.data[ownProps.match.params.language],

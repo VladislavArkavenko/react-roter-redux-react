@@ -1,65 +1,45 @@
-import React, { Component } from 'react'
-import { fetchUser } from '../api'
+import { requestUser } from '../redux-modules/usersModule'
+import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 import Counter from './Counter'
 
-
-export default class UserGrid extends Component {
+class UserGrid extends Component {
     constructor(props){
         super(props)
-
-        let user
-
-        if ( __isBrowser__ ) {
-            user = window.__INITIAL_DATA__
-            delete window.__INITIAL_DATA__
-        } else {
-            user = props.staticContext.data
-        }
-
-        this.state = {
-            user,
-            loading: user ? false : true,
-        }
-
-        this.getUser = this.getUser.bind(this)
     }
 
     componentDidMount () {
-        if (!this.state.user) {
-            this.getUser(this.props.match.params.id)
-        }
+        this.fetchUser(this.props)
     }
 
-    componentDidUpdate (prevProps) {
-        if (prevProps.match.params.id !== this.props.match.params.id) {
-            this.getUser(this.props.match.params.id)
-        }
+    componentWillReceiveProps (nextProps) {
+        this.fetchUser(nextProps)
     }
 
-    getUser (name) {
-        this.setState( () => ({
-            loading: true
-        }) )
+    fetchUser (props) {
+        const name = props.match.params.name
 
-        fetchUser(name)
-            .then( user => this.setState( () => ({
-                user,
-                loading: false,
-            }) ) )
+        if ( !this.props.data[name] ) {
+            this.props.requestUser(name)
+        }
     }
 
     render() {
-        const { user, loading } = this.state
+        const {error, user}  = this.props
 
-        if (loading) {
-            return <p>Loading...</p>
-        }
-
-        if(user.message === "Not Found"){
+        if (this.props.error) {
             return (
-                <div>
-                   <h1> Sorry, we didn`t found anyone with this name. </h1>
-                </div>
+                <Fragment>
+                    <h6> Ops! There is { error.status } error. </h6>
+                    <p> { error.message } </p>
+                </Fragment>
+            )
+        } else if (!user) {
+            return(
+                <Fragment>
+                    <h2> Loading... </h2>
+                    <p>  Please wait a few seconds </p>
+                </Fragment>
             )
         } else {
             return (
@@ -76,3 +56,15 @@ export default class UserGrid extends Component {
         }
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        error: state.users.error,
+        user:  state.users.data[ownProps.match.params.name],
+        data: state.users.data
+    }
+}
+
+const mapDispatchToProps = { requestUser }
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserGrid)

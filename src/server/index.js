@@ -7,17 +7,15 @@ import serialize from 'serialize-javascript'
 import { Provider } from 'react-redux'
 import Loadable from 'react-loadable'
 import thunk from 'redux-thunk'
-import App from '../common/App'
 import express from 'express'
 import React from 'react'
 import cors from 'cors'
 import path from 'path'
 
-
-
 import stats from '../../dist/react-loadable.json'
 import reducers from './reduxReducers'
 import routes from '../common/routes'
+import App from '../common/App'
 
 const app = express()
 const port = 3000
@@ -81,8 +79,7 @@ app.get( '*' , (req, res) => {
                         bundles.map(bundle => {
                             return `<script src="/${bundle.file}"></script>`
                         }).join('\\n')
-                     }        
-                    <script src="/vendor.js"></script>
+                     }                   
                     <script src="/main.js"></script>                                              
                   </body> 
                                    
