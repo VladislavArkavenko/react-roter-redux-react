@@ -5,17 +5,22 @@ import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import serialize from 'serialize-javascript'
 import { Provider } from 'react-redux'
+import { Helmet } from 'react-helmet'
 import Loadable from 'react-loadable'
 import thunk from 'redux-thunk'
 import express from 'express'
 import React from 'react'
 import cors from 'cors'
 import path from 'path'
+import fs from 'fs'
+
 
 import stats from '../../dist/react-loadable.json'
 import reducers from './reduxReducers'
 import routes from '../common/routes'
 import App from '../common/App'
+
+const content = fs.readFileSync(path.resolve('./dist/index.html' ), 'utf8')
 
 const app = express()
 const port = 3000
@@ -24,7 +29,6 @@ app.use(cors())
 app.use(express.static(path.resolve('./dist')))
 
 const preloadData = (location, store) => {
-
     const branch = matchRoutes(routes, location)
 
     const promises = branch.map( ({ route, match }) => {
@@ -45,48 +49,30 @@ app.get( '*' , (req, res) => {
 
     preloadData(req.url, store).then(() => {
 
-            const html = renderToString(
-                <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-                    <Provider store={store}>
-                        <StaticRouter location={req.url} context={context}>
-                            <App/>
-                        </StaticRouter>
-                    </Provider>
-                </Loadable.Capture>
-            )
+        const html = renderToString(
+            <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+                <Provider store={store}>
+                    <StaticRouter location={req.url} context={context}>
+                        <App/>
+                    </StaticRouter>
+                </Provider>
+            </Loadable.Capture>
+        )
 
-            let bundles = getBundles(stats, modules)
+        let bundles = getBundles(stats, modules)
+        let helmet = Helmet.renderStatic()
+        let filledContent = content
 
-            res.send(`
-                <!doctype html>
-                <html lang="en"> 
-                                               
-                  <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                    <title> My App </title>                                                       
-                    
-                    <script>
-                        window.__PRELOADED_STATE__ = ${serialize( store.getState() )} 
-                    </script>  
-                                                         
-                  </head>
-                
-                  <body>
-                    <div id="app"> ${html} </div>
-                    ${
-                        bundles.map(bundle => {
-                            return `<script src="/${bundle.file}"></script>`
-                        }).join('\\n')
-                     }                   
-                    <script src="/main.js"></script>                                              
-                  </body> 
-                                   
-                </html>
-            `)
-        }
-    )
+        filledContent = filledContent.replace("<!--title-->", helmet.title.toString() )
+        filledContent = filledContent.replace("<!--meta-->", helmet.meta.toString() )
+        filledContent = filledContent.replace("<!--html-->", html )
+        filledContent = filledContent.replace("{/*preload_state*/}", serialize(store.getState()) )
+        filledContent = filledContent.replace("<!--scripts-->", bundles.map( bundle => {
+            return `<script src="/${bundle.file}"> </script>`
+        }).join('\n') )
+
+        res.status(200).send(filledContent)
+    })
 })
 
 

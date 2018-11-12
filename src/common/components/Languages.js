@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import React from 'react'
+import React, { Fragment } from 'react'
+import { Helmet } from 'react-helmet'
 
 export default function Languages() {
     const languages = [
@@ -26,17 +27,25 @@ export default function Languages() {
     ]
 
     return (
-        <div>
-            <h2>This is Languages page.</h2>
-            <ul>
-                { languages.map( ({name, param}) => (
-                    <li key={param}>
-                        <NavLink activeStyle={{fontWeight: 'bold'}} to={`/languages/${param}`}>
-                            {name}
-                        </NavLink>
-                    </li>
-                ) ) }
-            </ul>
-        </div>
+        <Fragment>
+
+            <Helmet>
+                <title> Languages </title>
+                <meta name="description" content="Server side rendering and code-splitting(language page)" />
+            </Helmet>
+
+            <div>
+                <h2>This is Languages page.</h2>
+                <ul>
+                    { languages.map( ({name, param}) => (
+                        <li key={param}>
+                            <NavLink activeStyle={{fontWeight: 'bold'}} to={`/languages/${param}`}>
+                                {name}
+                            </NavLink>
+                        </li>
+                    ) ) }
+                </ul>
+            </div>
+        </Fragment>
     )
 }

@@ -1,5 +1,4 @@
 const nodeExternals = require('webpack-node-externals')
-const webpack = require('webpack')
 const path = require('path')
 
 let config = {
@@ -19,12 +18,7 @@ let config = {
             }
         ]
     },
-    devtool: 'inline-source-map',
-    plugins: [
-        new webpack.DefinePlugin({
-            __isBrowser__: "false"
-        })
-    ]
+    devtool: 'inline-source-map'
 }
 
 module.exports = config;

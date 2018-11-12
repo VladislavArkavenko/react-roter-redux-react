@@ -1,5 +1,5 @@
 const { ReactLoadablePlugin } = require('react-loadable/webpack')
-const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
 let config = {
@@ -21,8 +21,8 @@ let config = {
     },
     devtool: 'inline-source-map',
     plugins: [
-        new webpack.DefinePlugin({
-            __isBrowser__: "true"
+        new HtmlWebpackPlugin({
+            template: './index.html'
         }),
         new ReactLoadablePlugin({
             filename:  path.resolve(__dirname, 'dist', 'react-loadable.json'),
@@ -30,4 +30,4 @@ let config = {
     ]
 }
 
-module.exports = config;
+module.exports = config
